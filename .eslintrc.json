@@ -1,0 +1,136 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"],
+    "tsconfigRootDir": "."
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/strict",
+    "plugin:@typescript-eslint/stylistic",
+    "plugin:import/recommended",
+    "plugin:perfectionist/recommended-natural",
+    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "perfectionist",
+    "tailwindcss",
+    "etc",
+    "unicorn"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false
+      }
+    ],
+    "tailwindcss/no-custom-classname": "off",
+    "react/jsx-newline": [
+      2,
+      {
+        "prevent": true
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "perfectionist/sort-imports": [
+      "error",
+      {
+        "type": "natural",
+        "order": "asc",
+        "groups": [
+          "type",
+          "side-effect",
+          ["builtin", "external"],
+          "internal-type",
+          "internal",
+          ["parent-type", "sibling-type", "index-type"],
+          ["parent", "sibling", "index"],
+          "style",
+          "object",
+          "unknown"
+        ],
+        "newlines-between": "never",
+        "internal-pattern": ["@/**"]
+      }
+    ],
+    "etc/no-commented-out-code": "error",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "kebabCase"
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variableLike",
+        "format": ["camelCase"],
+        "filter": {
+          "regex": "^_+$", // Allows the `_` character to be used as a variable name
+          "match": false
+        }
+      },
+      {
+        "selector": "function",
+        "format": [
+          "camelCase",
+          "PascalCase" // Required to use PascalCase for React components
+        ]
+      },
+      {
+        "selector": "variable",
+        "types": [
+          "function" // Required to define React components with arrow functions
+        ],
+        "format": ["camelCase", "PascalCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "(^(I|T)[A-Z])|([A-Z]*(Type|Interface)$)",
+          "match": false
+        }
+      },
+      {
+        "selector": "enumMember",
+        "format": ["UPPER_CASE"]
+      }
+    ]
+  },
+  "settings": {
+    "next": {
+      "rootDir": true
+    },
+    "tailwindcss": {
+      "callees": ["cn"],
+      "config": "tailwind.config.js"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*.mjs", "*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": ["./tsconfig.json"],
+        "tsconfigRootDir": "."
+      }
+    },
+    {
+      "files": ["*.mjs", "*.js", "*.jsx"]
+    }
+  ],
+  "ignorePatterns": ["!**/*", ".next/**/*", "node_modules/**/*", "*.config.*"]
+}
