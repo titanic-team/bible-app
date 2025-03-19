@@ -24,3 +24,16 @@ export default async function BookPage({ params }: BookPageProps) {
     />
   );
 }
+
+export function generateStaticParams() {
+  const plainVersions = versionsService.getPlainVersions();
+
+  return plainVersions.flatMap((version) => {
+    const plainBooks = versionsService.getPlainBooks(version.id);
+
+    return plainBooks.map((book) => ({
+      bookId: book.id,
+      versionId: version.id,
+    }));
+  });
+}

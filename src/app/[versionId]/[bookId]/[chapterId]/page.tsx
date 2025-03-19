@@ -25,3 +25,24 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
     />
   );
 }
+
+export function generateStaticParams() {
+  const plainVersions = versionsService.getPlainVersions();
+
+  return plainVersions.flatMap((version) => {
+    const plainBooks = versionsService.getPlainBooks(version.id);
+
+    return plainBooks.flatMap((book) => {
+      const plainChapters = versionsService.getPlainChapters(
+        version.id,
+        book.id,
+      );
+
+      return plainChapters.flatMap((chapter) => ({
+        bookId: book.id,
+        chapterId: String(chapter),
+        versionId: version.id,
+      }));
+    });
+  });
+}

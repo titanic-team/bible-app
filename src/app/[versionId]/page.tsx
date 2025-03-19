@@ -21,3 +21,9 @@ export default async function VersionPage({ params }: VersionPageProps) {
     />
   );
 }
+
+export function generateStaticParams() {
+  const plainVersions = versionsService.getPlainVersions();
+
+  return plainVersions.map(({ id }) => ({ versionId: id }));
+}
