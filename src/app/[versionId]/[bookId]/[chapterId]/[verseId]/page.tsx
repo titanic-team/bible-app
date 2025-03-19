@@ -27,7 +27,7 @@ export default async function VersePage({ params }: VersePageProps) {
   return (
     <JsonViewer
       data={verse}
-      title={`${versionId} / ${bookId} / ${chapterId} / ${verseId}`}
+      title={`Version: ${versionId.toUpperCase()} / Book: ${bookId.toUpperCase()} / Chapter: ${chapterId} / Verse: ${verseId}`}
     />
   );
 }

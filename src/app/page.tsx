@@ -2,12 +2,7 @@ import { JsonViewer } from "@/components/shared/json-viewer";
 import { versionsService } from "@/database/services";
 
 export default function LandingPage() {
-  const versions = versionsService.getVersions();
+  const plainBooks = versionsService.getPlainBooks();
 
-  return (
-    <JsonViewer
-      data={Object.fromEntries(versions.entries())}
-      title="All Versions"
-    />
-  );
+  return <JsonViewer data={plainBooks} title="Landing Page" />;
 }

@@ -2,6 +2,8 @@ import { versions as versionsData } from "@/database/data";
 import {
   Book,
   Chapter,
+  PlainBook,
+  PlainVersion,
   Verse,
   Version,
   VersionId,
@@ -40,6 +42,25 @@ export class VersionsService {
     if (!book) return null;
 
     return book.chapters.find((chapter) => chapter.id === chapterId) || null;
+  }
+
+  getPlainBooks(versionId: VersionId = "nvi"): PlainBook[] {
+    const version = this.versions.get(versionId);
+    if (!version) return [];
+
+    return version.books.map(({ id, name }) => ({ id, name }));
+  }
+
+  getPlainChapters(versionId: VersionId, bookId: string): number[] {
+    const book = this.getBook(versionId, bookId);
+    if (!book) return [];
+
+    return book.chapters.map(({ id }) => id);
+  }
+
+  getPlainVersions(): PlainVersion[] {
+    const versions = Array.from(this.versions.values());
+    return versions.map(({ id, name }) => ({ id, name }));
   }
 
   getVerse(

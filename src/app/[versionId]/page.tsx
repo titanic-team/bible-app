@@ -10,9 +10,14 @@ interface VersionPageProps {
 export default async function VersionPage({ params }: VersionPageProps) {
   const { versionId } = await params;
 
-  const version = versionsService.getVersion(versionId as VersionId);
+  const plainBooks = versionsService.getPlainBooks(versionId as VersionId);
 
-  if (!version) return notFound();
+  if (plainBooks.length === 0) return notFound();
 
-  return <JsonViewer data={version} title={`${versionId}`} />;
+  return (
+    <JsonViewer
+      data={plainBooks}
+      title={`Version: ${versionId.toUpperCase()}`}
+    />
+  );
 }

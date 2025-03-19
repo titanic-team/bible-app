@@ -15,6 +15,6 @@ interface TemporaryProps {
 export const JsonViewer = ({ data, title }: TemporaryProps) => (
   <div className="container mx-auto space-y-4 py-8">
     <h1 className="text-xl font-bold">{title}</h1>
-    <ReactJsonView collapsed src={data} />
+    <ReactJsonView src={data} />
   </div>
 );

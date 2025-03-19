@@ -24,3 +24,7 @@ export interface Verse {
   id: number;
   verse: string;
 }
+
+export type PlainVersion = Pick<Version, "id" | "name">;
+
+export type PlainBook = Pick<Book, "id" | "name">;

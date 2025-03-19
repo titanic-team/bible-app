@@ -21,7 +21,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
   return (
     <JsonViewer
       data={chapter}
-      title={`${versionId} / ${bookId} / ${chapterId}`}
+      title={`Version: ${versionId.toUpperCase()} / Book: ${bookId.toUpperCase()} / Chapter: ${chapterId}`}
     />
   );
 }

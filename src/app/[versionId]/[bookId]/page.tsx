@@ -10,9 +10,17 @@ interface BookPageProps {
 export default async function BookPage({ params }: BookPageProps) {
   const { bookId, versionId } = await params;
 
-  const book = versionsService.getBook(versionId as VersionId, bookId);
+  const plainChapters = versionsService.getPlainChapters(
+    versionId as VersionId,
+    bookId,
+  );
 
-  if (!book) return notFound();
+  if (plainChapters.length === 0) return notFound();
 
-  return <JsonViewer data={book} title={`${versionId} / ${bookId}`} />;
+  return (
+    <JsonViewer
+      data={plainChapters}
+      title={`Version: ${versionId.toUpperCase()} / Book: ${bookId.toUpperCase()}`}
+    />
+  );
 }
