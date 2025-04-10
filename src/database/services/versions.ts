@@ -11,7 +11,7 @@ import {
 } from "@/types/database";
 
 export class VersionsService {
-  private static instance: VersionsService | null = null;
+  private static instance: null | VersionsService = null;
   private versions: Versions;
 
   constructor() {
@@ -68,14 +68,14 @@ export class VersionsService {
     bookId: string,
     chapterId: number,
     verseId: number,
-  ): Verse | null {
+  ): null | Verse {
     const chapter = this.getChapter(versionId, bookId, chapterId);
     if (!chapter) return null;
 
     return chapter.verses.find((verse) => verse.id === verseId) || null;
   }
 
-  getVersion(versionId: VersionId): Version | null {
+  getVersion(versionId: VersionId): null | Version {
     return this.versions.get(versionId) || null;
   }
 
