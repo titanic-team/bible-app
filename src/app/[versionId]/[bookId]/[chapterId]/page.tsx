@@ -1,20 +1,20 @@
 import { notFound } from "next/navigation";
 import { JsonViewer } from "@/components/shared/json-viewer";
 import { versionsService } from "@/database/services";
-import { VersionId } from "@/types/database";
+import { EncodedChapterParams } from "@/types/versions";
+import { decodeStaticParams, encodeStaticParams } from "@/utils/static-params";
 
 interface ChapterPageProps {
-  params: Promise<{ bookId: string; chapterId: string; versionId: string }>;
+  params: Promise<EncodedChapterParams>;
 }
 
 export default async function ChapterPage({ params }: ChapterPageProps) {
-  const { bookId, chapterId, versionId } = await params;
-
-  const chapter = versionsService.getChapter(
-    versionId as VersionId,
-    bookId,
-    Number(chapterId),
+  const { bookId, chapterId, versionId } = await decodeStaticParams(
+    "chapter",
+    params,
   );
+
+  const chapter = versionsService.getChapter(versionId, bookId, chapterId);
 
   if (!chapter) return notFound();
 
@@ -27,22 +27,5 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
 }
 
 export function generateStaticParams() {
-  const plainVersions = versionsService.getPlainVersions();
-
-  return plainVersions.flatMap((version) => {
-    const plainBooks = versionsService.getPlainBooks(version.id);
-
-    return plainBooks.flatMap((book) => {
-      const plainChapters = versionsService.getPlainChapters(
-        version.id,
-        book.id,
-      );
-
-      return plainChapters.flatMap((chapter) => ({
-        bookId: book.id,
-        chapterId: String(chapter),
-        versionId: version.id,
-      }));
-    });
-  });
+  return encodeStaticParams("chapter");
 }

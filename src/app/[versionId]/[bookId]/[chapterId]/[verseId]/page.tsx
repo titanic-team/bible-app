@@ -1,26 +1,20 @@
 import { notFound } from "next/navigation";
 import { JsonViewer } from "@/components/shared/json-viewer";
 import { versionsService } from "@/database/services";
-import { VersionId } from "@/types/database";
+import { EncodedVerseParams } from "@/types/versions";
+import { decodeStaticParams } from "@/utils/static-params";
 
 interface VersePageProps {
-  params: Promise<{
-    bookId: string;
-    chapterId: string;
-    verseId: string;
-    versionId: string;
-  }>;
+  params: Promise<EncodedVerseParams>;
 }
 
 export default async function VersePage({ params }: VersePageProps) {
-  const { bookId, chapterId, verseId, versionId } = await params;
-
-  const verse = versionsService.getVerse(
-    versionId as VersionId,
-    bookId,
-    Number(chapterId),
-    Number(verseId),
+  const { bookId, chapterId, verseId, versionId } = await decodeStaticParams(
+    "verse",
+    params,
   );
+
+  const verse = versionsService.getVerse(versionId, bookId, chapterId, verseId);
 
   if (!verse) return notFound();
 

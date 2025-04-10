@@ -1,39 +1,27 @@
 import { notFound } from "next/navigation";
 import { JsonViewer } from "@/components/shared/json-viewer";
 import { versionsService } from "@/database/services";
-import { VersionId } from "@/types/database";
+import { EncodedBookParams } from "@/types/versions";
+import { decodeStaticParams, encodeStaticParams } from "@/utils/static-params";
 
 interface BookPageProps {
-  params: Promise<{ bookId: string; versionId: string }>;
+  params: Promise<EncodedBookParams>;
 }
 
 export default async function BookPage({ params }: BookPageProps) {
-  const { bookId, versionId } = await params;
+  const { bookId, versionId } = await decodeStaticParams("book", params);
+  const chapters = versionsService.getPlainChapters(versionId, bookId);
 
-  const plainChapters = versionsService.getPlainChapters(
-    versionId as VersionId,
-    bookId,
-  );
-
-  if (plainChapters.length === 0) return notFound();
+  if (chapters.length === 0) return notFound();
 
   return (
     <JsonViewer
-      data={plainChapters}
+      data={chapters}
       title={`Version: ${versionId.toUpperCase()} / Book: ${bookId.toUpperCase()}`}
     />
   );
 }
 
 export function generateStaticParams() {
-  const plainVersions = versionsService.getPlainVersions();
-
-  return plainVersions.flatMap((version) => {
-    const plainBooks = versionsService.getPlainBooks(version.id);
-
-    return plainBooks.map((book) => ({
-      bookId: book.id,
-      versionId: version.id,
-    }));
-  });
+  return encodeStaticParams("book");
 }
