@@ -121,7 +121,7 @@ export async function decodeStaticParams(
 
   const bookResult = {
     ...versionResult,
-    bookId: decodeURIComponent(encodedParams.bookId).toLowerCase(),
+    bookId: forceDecodeURIComponent(encodedParams.bookId).toLowerCase(),
   };
 
   if (depth === "book") return bookResult;
@@ -145,4 +145,27 @@ export async function decodeStaticParams(
     ...chapterResult,
     verseId: Number(encodedParams.verseId),
   };
+}
+
+/**
+ * Forcefully decodes a URI component, handling common encoding issues.
+ * This function is useful when the standard decodeURIComponent doesn't
+ * fully decode the string (usually at build time).
+ * @param str The string to decode
+ * @returns The decoded string
+ */
+export function forceDecodeURIComponent(str: string): string {
+  const encodedRegex = /%[0-9A-Fa-f]{2}/g;
+
+  const maxSteps = 5; // Prevent infinite loops
+  let steps = 0;
+  let result = str;
+
+  // Decode the string until no more encoded characters are found
+  while (encodedRegex.test(result) && steps < maxSteps) {
+    result = decodeURIComponent(result);
+    steps++;
+  }
+
+  return result;
 }
