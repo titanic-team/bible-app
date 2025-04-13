@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import { metadata } from "@/constants/metadata";
 
 export { metadata };
@@ -15,8 +16,17 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="pt-BR">
-      <body className={`${font.className} antialiased`}>{children}</body>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${font.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
