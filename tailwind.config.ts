@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   content: [
@@ -61,6 +62,10 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
       },
+    },
+    fontFamily: {
+      headings: ["Gabarito", ...defaultTheme.fontFamily.sans],
+      sans: ["Inter", ...defaultTheme.fontFamily.sans],
     },
   },
 } satisfies Config;
